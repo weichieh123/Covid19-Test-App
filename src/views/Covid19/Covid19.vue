@@ -6,10 +6,9 @@
         <button class="refresh">
           <img class="refresh-icon" :src="refresh" alt="refresh" />
         </button>
-        <small>資料來源:{{timeStamp}}</small>
+        <small>資料來源:{{ timeStamp }}</small>
       </div>
-        
-      
+
       <div class="search">
         <select v-model="selectedCity" name="selectedCity" id="selectedCity">
           <option :value="''" disabled selected>選擇縣市</option>
@@ -113,12 +112,19 @@ export default {
   methods: {
     test() {
       this.selectedCity = '新北市';
-      this.selectedDist = '中和區'
+      this.selectedDist = '中和區';
     },
     getNowTime() {
       const today = new Date();
-      const date = today.getFullYear() + '/' + today.getMonth()+1 +'/' + today.getDate();
-      const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+      const date =
+        today.getFullYear() +
+        '/' +
+        today.getMonth() +
+        1 +
+        '/' +
+        today.getDate();
+      const time =
+        today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
       this.timeStamp = date + ' ' + time;
     },
     downloadFile() {
@@ -146,13 +152,6 @@ export default {
             complete: (res) => {
               // console.log(res.data);
               this.resFile = res.data;
-              this.resFile.forEach((obj) => {
-                // 將地址之縣市及區域分開 有bug
-                if (obj['醫事機構地址']) {
-                  obj.city = obj['醫事機構地址'].slice(0, 3);
-                  obj.dist = obj['醫事機構地址'].slice(3, 6);
-                }
-              });
             },
           });
           this.getNowTime();
@@ -161,7 +160,7 @@ export default {
           console.log(error);
         });
     },
-    refreshData(){
+    refreshData() {
       // 重新下載資料並更新地圖
       this.downloadFile();
       this.updateMap();
@@ -176,11 +175,18 @@ export default {
 
       this.storeList = this.resFile.filter((obj) => {
         // 篩選縣市及區域
-        if (obj.city === this.selectedCity && obj.dist === this.selectedDist) {
+        if (!obj['醫事機構地址']) return;
+        let cityLen = this.selectedCity.length;
+        let distLen = this.selectedDist.length;
+        if (
+          obj['醫事機構地址'].slice(0, cityLen) === this.selectedCity &&
+          obj['醫事機構地址'].slice(cityLen, cityLen + distLen) ===
+            this.selectedDist
+        ) {
           return obj;
         }
       });
-      console.log('storeList:', this.storeList);
+      // console.log('storeList:', this.storeList);
 
       // 更新地圖原點，以storeList第一筆站牌之經緯度為中心
       if (!this.storeList.length) return;
@@ -192,32 +198,49 @@ export default {
           .addTo(openStreetMap)
           .bindPopup(
             `<h3><strong>${store['醫事機構名稱']}</strong></h3>
-            <p><strong>${store['醫事機構地址']}</strong></p>
+            <strong>${store['醫事機構地址']}</strong></br>
+            <strong style=" color: #3687f0;">廠牌項目：${store['廠牌項目']}</strong></br>
           <strong style=" color: #3687f0;">快篩試劑庫存：${store['快篩試劑截至目前結餘存貨數量']}</strong>
           <hr>
           <p>備註:${store['備註']}</p>
           `
           );
       });
-      let LatLng = L.latLng(this.storeList[0]['緯度'], this.storeList[0]['經度']);
-      L.popup().setLatLng(LatLng).setContent( 
-        `<h3><strong>${this.storeList[0]['醫事機構名稱']}</strong></h3>
-          <p><strong>${this.storeList[0]['醫事機構地址']}</strong></p>
+      let LatLng = L.latLng(
+        this.storeList[0]['緯度'],
+        this.storeList[0]['經度']
+      );
+      L.popup()
+        .setLatLng(LatLng)
+        .setContent(
+          `<h3><strong>${this.storeList[0]['醫事機構名稱']}</strong></h3>
+          <strong>${this.storeList[0]['醫事機構地址']}</strong></br>
+          <strong style=" color: #3687f0;">廠牌項目：${this.storeList[0]['廠牌項目']}</strong></br>
           <strong style=" color: #3687f0;">快篩試劑庫存：${this.storeList[0]['快篩試劑截至目前結餘存貨數量']}</strong>
           <hr>
           <p>備註:${this.storeList[0]['備註']}</p>
-          `).openOn(openStreetMap);
+          `
+        )
+        .openOn(openStreetMap);
     },
     clickToPopup(index) {
-      let LatLng = L.latLng(this.storeList[index]['緯度'], this.storeList[index]['經度']);
-      L.popup().setLatLng(LatLng).setContent( 
-        `<h3><strong>${this.storeList[index]['醫事機構名稱']}</strong></h3>
-          <p><strong>${this.storeList[index]['醫事機構地址']}</strong></p>
+      let LatLng = L.latLng(
+        this.storeList[index]['緯度'],
+        this.storeList[index]['經度']
+      );
+      L.popup()
+        .setLatLng(LatLng)
+        .setContent(
+          `<h3><strong>${this.storeList[index]['醫事機構名稱']}</strong></h3>
+          <strong>${this.storeList[index]['醫事機構地址']}</strong></br>
+          <strong style=" color: #3687f0;">廠牌項目：${this.storeList[index]['廠牌項目']}</strong></br>
           <strong style=" color: #3687f0;">快篩試劑庫存：${this.storeList[index]['快篩試劑截至目前結餘存貨數量']}</strong>
           <hr>
           <p>備註:${this.storeList[index]['備註']}</p>
-          `).openOn(openStreetMap);
-    }
+          `
+        )
+        .openOn(openStreetMap);
+    },
   },
 };
 </script>
