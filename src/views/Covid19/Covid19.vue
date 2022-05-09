@@ -224,6 +224,8 @@ export default {
         .openOn(openStreetMap);
     },
     clickToPopup(index) {
+      this.storeList.forEach(obj => obj.isActive = false);
+      this.storeList[index].isActive = true;
       let LatLng = L.latLng(
         this.storeList[index]['緯度'],
         this.storeList[index]['經度']

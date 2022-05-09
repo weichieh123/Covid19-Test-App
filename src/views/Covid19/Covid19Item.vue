@@ -1,6 +1,6 @@
 <template>
-  <div class="bus-item" @click="$emit('popup')">
-    <div class="bus-tag">
+  <div class="bus-item" @click="$emit('popup')" >
+    <div class="bus-tag" :class="{active: store.isActive}">
       {{ index+1 }}
     </div>
     {{ store['醫事機構名稱'] }} ({{ store['快篩試劑截至目前結餘存貨數量']}}組)
