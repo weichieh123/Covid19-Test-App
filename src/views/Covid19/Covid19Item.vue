@@ -15,15 +15,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/global.scss';
 .bus-item {
   display: flex;
   .bus-tag {
-    background-color: #42b983;
-    color: white;
+    background-color: $mainColor;
+    color: $color_white;
+    width: 40px;
     margin-right: 1rem;
     padding: 0 0.5rem;
     &.active {
-      background-color: #e67272;
+      background-color: $color_tomato;
     }
   }
 }

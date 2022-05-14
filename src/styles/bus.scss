@@ -1,33 +1,52 @@
-$mainColor: #42b983;
-$darkColor: #2c3e50;
+@import './global.scss';
 @mixin mobile {
-  @media (max-width: 576px){
+  @media (max-width: 576px) {
     @content;
   }
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
 
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: $darkColor;
-}
-  
-#nav {
-    height: 70px;
-    h3 {
-      margin: 0;
-      padding:  18px 0;
-    }
+  // font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: $darkColor;
+  background-color: $color_bg;
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #aaa;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
 }
 
-#bus-stop, #bus-line {
+#nav {
+  height: 70px;
+  h3 {
+    margin: 0;
+    padding: 18px 0;
+  }
+}
+
+#bus-stop,
+#bus-line {
   display: flex;
   flex-wrap: wrap;
   .left {
@@ -48,15 +67,21 @@ html, body {
       align-items: center;
       justify-content: center;
       .refresh {
-        height: 35px;
-        width: 35px;
-        background-color: rgb(249, 203, 75);
-        border-radius: 10px;
-        color: $darkColor;
+        height: 32px;
+        width: 32px;
+        background-color: $color_refreshBg;
+        border-radius: 4px;
         border: none;
         margin: 10px;
         display: inline-block;
         cursor: pointer;
+        vertical-align: middle;
+        padding: 4px;
+        img {
+          // margin: auto;
+          // line-height: 35px;
+          height: 24px;
+        }
       }
     }
     .search {
@@ -65,19 +90,21 @@ html, body {
       justify-content: center;
       width: 100%;
       // min-height: 55px;
-      
+
       select {
         width: 80%;
         height: 35px;
         padding: 0 1rem;
         margin-bottom: 10px;
+        border: none;
+        color: $mainColor;
       }
       button {
         height: 35px;
         width: 80%;
         margin-left: 5px;
         background-color: $mainColor;
-        color: $darkColor;
+        color: $color_btn;
         border: none;
       }
     }
@@ -90,7 +117,7 @@ html, body {
         width: 80%;
       }
       .bus-item {
-        background-color: rgb(253, 227, 110);
+        background-color: $color_yellow;
         margin-bottom: 0.5rem;
         cursor: pointer;
         // &.active {
@@ -112,5 +139,4 @@ html, body {
       height: 97%;
     }
   }
-    
 }

@@ -110,10 +110,10 @@ export default {
     },
   },
   methods: {
-    test() {
-      this.selectedCity = '新北市';
-      this.selectedDist = '中和區';
-    },
+    // test() {
+    //   this.selectedCity = '新北市';
+    //   this.selectedDist = '中和區';
+    // },
     getNowTime() {
       const today = new Date();
       const date =
